@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panier - Dar Lalla</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--burgundy:#5a0015;--gold:#d4a44d;--cream:#fff8f1;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Poppins',sans-serif;background:var(--cream);}
+        .top-bar{background:linear-gradient(to right,#6d071f,#8b0f2f,#6d071f);color:#f5d28d;padding:10px;text-align:center;font-size:14px;}
+        .top-bar span{margin:0 25px;}
+        .navbar-custom{background:#3d0010;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;}
+        .logo{display:flex;align-items:center;gap:15px;}
+        .logo-circle{width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:35px;font-family:'Playfair Display',serif;box-shadow:0 0 20px rgba(212,164,77,0.5);}
+        .logo-text h2{color:var(--gold);font-family:'Playfair Display',serif;margin:0;font-size:38px;}
+        .logo-text p{color:#f4d7a1;margin:0;letter-spacing:3px;font-size:12px;}
+        .menu{display:flex;gap:35px;}
+        .menu a{color:white;text-decoration:none;font-weight:600;transition:0.3s;}
+        .menu a:hover{color:var(--gold);}
+        .icons i{color:white;margin-left:20px;font-size:24px;cursor:pointer;transition:0.3s;}
+        .icons i:hover{color:var(--gold);}
+        .section-title{text-align:center;margin:50px 0 30px;font-size:48px;color:var(--burgundy);font-family:'Playfair Display',serif;}
+        .cart-container{max-width:1200px;margin:0 auto;padding:0 20px;}
+        .cart-item{background:white;border-radius:15px;padding:20px;margin-bottom:20px;display:flex;align-items:center;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
+        .cart-item img{width:120px;height:120px;border-radius:10px;object-fit:cover;}
+        .cart-item-info{flex:1;padding:0 20px;}
+        .cart-item-info h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:24px;margin-bottom:10px;}
+        .cart-item-info p{color:#666;font-size:14px;margin-bottom:5px;}
+        .cart-item-quantity{display:flex;align-items:center;gap:10px;}
+        .cart-item-quantity button{width:35px;height:35px;border:2px solid var(--burgundy);background:white;color:var(--burgundy);border-radius:8px;font-size:18px;cursor:pointer;}
+        .cart-item-quantity button:hover{background:var(--burgundy);color:white;}
+        .cart-item-quantity span{font-size:18px;font-weight:600;min-width:30px;text-align:center;}
+        .cart-item-price{text-align:right;min-width:120px;}
+        .cart-item-price .price{color:var(--gold);font-size:24px;font-weight:bold;}
+        .cart-item-price .remove-btn{background:none;border:none;color:#dc3545;font-size:14px;cursor:pointer;margin-top:10px;}
+        .cart-summary{background:white;border-radius:15px;padding:30px;margin-top:30px;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
+        .cart-summary h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:28px;margin-bottom:20px;}
+        .cart-summary-row{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid #eee;}
+        .cart-summary-row.total{border-bottom:none;font-size:24px;font-weight:bold;color:var(--burgundy);padding-top:20px;}
+        .cart-summary-row.total span{color:var(--gold);}
+        .btn-checkout{background:var(--burgundy);color:white;padding:15px 40px;border:none;border-radius:10px;font-size:18px;font-weight:600;width:100%;margin-top:20px;transition:0.3s;}
+        .btn-checkout:hover{background:var(--gold);color:var(--burgundy);}
+        .empty-cart{text-align:center;padding:80px 20px;}
+        .empty-cart i{font-size:80px;color:var(--gold);margin-bottom:20px;}
+        .empty-cart h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:32px;margin-bottom:15px;}
+        .empty-cart p{color:#666;margin-bottom:30px;}
+        .empty-cart a{background:var(--burgundy);color:white;padding:15px 30px;text-decoration:none;border-radius:10px;font-weight:600;transition:0.3s;}
+        .empty-cart a:hover{background:var(--gold);color:var(--burgundy);}
+        footer{background:#2b000c;color:white;text-align:center;padding:35px;margin-top:70px;font-size:18px;}
+        footer span{color:var(--gold);font-weight:bold;}
+        @media(max-width:768px){.cart-item{flex-direction:column;text-align:center;}.cart-item-info{padding:15px 0;}.cart-item-price{text-align:center;}}
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <span><i class="bi bi-truck"></i> Livraison à partir de 100 MAD</span>
+    <span><i class="bi bi-gem"></i> Qualité Premium</span>
+    <span><i class="bi bi-shield-check"></i> Paiement sécurisé</span>
+    <span><i class="bi bi-headset"></i> Support 7j/7</span>
+</div>
+
+<div class="navbar-custom">
+    <div class="logo">
+        <div class="logo-circle">D</div>
+        <div class="logo-text">
+            <h2>DAR LALLA</h2>
+            <p>ÉLÉGANCE MAROCAINE</p>
+        </div>
+    </div>
+    <div class="menu">
+        <a href="/">ACCUEIL</a>
+        <a href="/products?categorie=Takchita">TAKCHITA</a>
+        <a href="/products?categorie=Caftan">CAFTAN</a>
+        <a href="/products?categorie=Djellaba">DJELLABA</a>
+        <a href="/products?categorie=Mdamma">MDAMMA</a>
+        <a href="/contact">CONTACT</a>
+    </div>
+
+    <div class="icons">
+        <a href="/order"><i class="bi bi-receipt"></i></a>
+        <a href="/cart"><i class="bi bi-bag"></i></a>
+        <a href="/login"><i class="bi bi-person"></i></a>
+    </div>
+</div>
+
+<h2 class="section-title">Mon Panier</h2>
+
+<div class="cart-container" th:if="${cart != null and !cart.items.isEmpty()}">
+    <div class="cart-item" th:each="item : ${cart.items}">
+<img th:src="${item.product.image.startsWith('http') ? item.product.image : '/uploads/' + item.product.image}" alt="Produit" th:if="${item.product.image}">
+                        <img src="https://via.placeholder.com/120" alt="Produit" th:unless="${item.product.image}">
+
+        <div class="cart-item-info">
+            <h3 th:text="${item.product.nom}">Nom</h3>
+            <p><strong>Catégorie:</strong> <span th:text="${item.product.categorie}">Catégorie</span></p>
+            <p><strong>Taille:</strong> <span th:text="${item.product.taille}">Taille</span></p>
+            <p><strong>Couleur:</strong> <span th:text="${item.product.couleur}">Couleur</span></p>
+        </div>
+
+        <div class="cart-item-quantity">
+            <form th:action="@{/cart/update}" method="post" style="display:inline;">
+                <input type="hidden" name="productId" th:value="${item.product.id}">
+                <input type="hidden" name="quantite" th:value="${item.quantite - 1}">
+                <button type="submit">-</button>
+            </form>
+            <span th:text="${item.quantite}">1</span>
+            <form th:action="@{/cart/update}" method="post" style="display:inline;">
+                <input type="hidden" name="productId" th:value="${item.product.id}">
+                <input type="hidden" name="quantite" th:value="${item.quantite + 1}">
+                <button type="submit">+</button>
+            </form>
+        </div>
+
+        <div class="cart-item-price">
+            <div class="price"><span th:text="${#numbers.formatDecimal(item.sousTotal, 0, 0)}">0</span> MAD</div>
+            <form th:action="@{/cart/remove}" method="post">
+                <input type="hidden" name="productId" th:value="${item.product.id}">
+                <button type="submit" class="remove-btn"><i class="bi bi-trash"></i> Supprimer</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="cart-summary">
+        <h3>Récapitulatif</h3>
+        <div class="cart-summary-row">
+            <span>Sous-total</span>
+            <span><span th:text="${#numbers.formatDecimal(cart.total, 0, 0)}">0</span> MAD</span>
+        </div>
+        <div class="cart-summary-row">
+            <span>Livraison</span>
+            <span th:text="${cart.total >= 100 ? 'Offerte' : '100 MAD'}">Offerte</span>
+        </div>
+        <div class="cart-summary-row total">
+            <span>Total</span>
+            <span><span th:text="${#numbers.formatDecimal(cart.total + (cart.total >= 100 ? 0 : 100), 0, 0)}">0</span> MAD</span>
+        </div>
+        <a href="/checkout" class="btn-checkout">Passer à la caisse</a>
+    </div>
+</div>
+
+<div class="cart-container" th:if="${cart == null or cart.items.isEmpty()}">
+    <div class="empty-cart">
+        <i class="bi bi-bag-x"></i>
+        <h3>Votre panier est vide</h3>
+        <p>Découvrez nos magnifiques créations marocaines</p>
+        <a href="/products">Voir les produits</a>
+    </div>
+</div>
+
+<footer>
+    © 2026 <span>Dar Lalla</span> — Élégance Marocaine
+</footer>
+
+</body>
+</html>

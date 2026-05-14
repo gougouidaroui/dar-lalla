@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dar Lalla - Accueil</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+:root{
+    --burgundy:#5a0015;
+    --gold:#d4a44d;
+    --cream:#fff8f1;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:var(--cream);
+    overflow-x:hidden;
+}
+
+.top-bar{
+    background:linear-gradient(to right,#6d071f,#8b0f2f,#6d071f);
+    color:#f5d28d;
+    padding:10px;
+    text-align:center;
+    font-size:14px;
+}
+
+.top-bar span{
+    margin:0 25px;
+}
+
+.navbar-custom{
+    background:#3d0010;
+    padding:18px 60px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:999;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo-circle{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:2px solid var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-size:35px;
+    font-family:'Playfair Display',serif;
+    box-shadow:0 0 20px rgba(212,164,77,0.5);
+}
+
+.logo-text h2{
+    color:var(--gold);
+    font-family:'Playfair Display',serif;
+    margin:0;
+    font-size:38px;
+}
+
+.logo-text p{
+    color:#f4d7a1;
+    margin:0;
+    letter-spacing:3px;
+    font-size:12px;
+}
+
+.menu{
+    display:flex;
+    gap:35px;
+}
+
+.menu a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    color:var(--gold);
+}
+
+.icons i{
+    color:white;
+    margin-left:20px;
+    font-size:24px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.icons i:hover{
+    color:var(--gold);
+    transform:translateY(-3px);
+}
+
+.hero{
+    min-height:95vh;
+    background:
+    linear-gradient(
+        to right,
+        rgba(20,0,5,0.95),
+        rgba(90,0,25,0.70),
+        rgba(20,0,5,0.15)
+    ),
+    url('/images/hero.jpeg');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    padding:90px;
+    position:relative;
+}
+
+.hero-content{
+    max-width:700px;
+    color:white;
+    z-index:2;
+    animation:fadeUp 1.2s ease;
+}
+
+.mini-title{
+    color:var(--gold);
+    letter-spacing:3px;
+    margin-bottom:20px;
+    font-weight:600;
+}
+
+.hero h1{
+    font-size:90px;
+    line-height:1;
+    font-family:'Playfair Display',serif;
+    margin-bottom:25px;
+}
+
+.hero h1 span{
+    color:var(--gold);
+}
+
+.hero p{
+    font-size:20px;
+    line-height:1.8;
+    margin-bottom:40px;
+    color:#f8e8d0;
+}
+
+/* BOUTON AMÉLIORÉ */
+
+.btn-discover{
+    background:linear-gradient(135deg,#8b0f2f,#c0254d);
+    color:white;
+    padding:16px 35px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:700;
+    border:1px solid var(--gold);
+    transition:0.4s;
+    margin-right:15px;
+    display:inline-block;
+    font-size:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+}
+
+.btn-discover:hover{
+    transform:translateY(-5px);
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+    color:white;
+    background:linear-gradient(135deg,#a51439,#d62f59);
+}
+
+.btn-discover i{
+    margin-right:10px;
+    font-size:20px;
+}
+
+.features{
+    background:white;
+    padding:40px 60px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.feature-box{
+    text-align:center;
+}
+
+.feature-box i{
+    width:70px;
+    height:70px;
+    background:#6d071f;
+    color:var(--gold);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin:auto auto 15px;
+}
+
+.feature-box h5{
+    color:#6d071f;
+    font-weight:700;
+}
+
+.section{
+    padding:90px 70px;
+}
+
+.section-small{
+    text-align:center;
+    color:#c08a2c;
+    letter-spacing:3px;
+    font-weight:700;
+}
+
+.section-title{
+    text-align:center;
+    font-size:60px;
+    margin-bottom:60px;
+    font-family:'Playfair Display',serif;
+    color:#2c0b0b;
+}
+
+.section-title span{
+    color:#7c102d;
+}
+
+.collection-card{
+    height:430px;
+    border-radius:25px;
+    overflow:hidden;
+    position:relative;
+    background-size:cover;
+    background-position:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    transition:0.5s;
+}
+
+.collection-card:hover{
+    transform:translateY(-15px) scale(1.02);
+}
+
+.collection-card::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,0.88),
+        rgba(0,0,0,0.1)
+    );
+}
+
+.card-content{
+    position:absolute;
+    bottom:25px;
+    width:100%;
+    text-align:center;
+    z-index:2;
+    color:white;
+    padding:20px;
+}
+
+.circle-icon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#7c102d;
+    border:2px solid var(--gold);
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin:auto auto 20px;
+}
+
+.card-content h3{
+    font-size:38px;
+    font-family:'Playfair Display',serif;
+}
+
+.btn-small{
+    border:1px solid var(--gold);
+    color:var(--gold);
+    padding:10px 20px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    display:inline-block;
+    margin-top:10px;
+    transition:0.4s;
+}
+
+.btn-small:hover{
+    background:var(--gold);
+    color:#3d0010;
+}
+
+.products{
+    background:linear-gradient(135deg,#470112,#7c102d,#470112);
+    color:white;
+}
+
+.product-card{
+    background:rgba(255,255,255,0.07);
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.1);
+    transition:0.4s;
+}
+
+.product-card:hover{
+    transform:translateY(-12px);
+}
+
+.product-card img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:20px;
+}
+
+.product-info h5{
+    font-size:28px;
+    font-family:'Playfair Display',serif;
+}
+
+.price{
+    color:var(--gold);
+    font-weight:700;
+    font-size:20px;
+}
+
+.stars{
+    color:var(--gold);
+}
+
+.testimonial-card{
+    background:#fffaf2;
+    padding:35px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    transition:0.4s;
+}
+
+.testimonial-card:hover{
+    transform:translateY(-10px);
+}
+
+.testimonial-card img{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #8b0f2f;
+    margin-bottom:15px;
+}
+
+.testimonial-card h4{
+    color:#7c102d;
+    font-weight:700;
+}
+
+footer{
+    background:#2b000c;
+    color:white;
+    text-align:center;
+    padding:35px;
+    font-size:18px;
+}
+
+footer span{
+    color:var(--gold);
+    font-weight:700;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(50px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@media(max-width:900px){
+    .hero{
+        padding:40px;
+    }
+
+    .hero h1{
+        font-size:50px;
+    }
+
+    .navbar-custom{
+        flex-direction:column;
+        gap:25px;
+    }
+
+    .menu{
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+}
+    </style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    <span><i class="bi bi-truck"></i> Livraison à partir de 100 MAD</span>
+    <span><i class="bi bi-gem"></i> Qualité Premium</span>
+    <span><i class="bi bi-shield-check"></i> Paiement sécurisé</span>
+    <span><i class="bi bi-headset"></i> Support 7j/7</span>
+</div>
+
+<div class="navbar-custom">
+    <div class="logo">
+        <div class="logo-circle">D</div>
+        <div class="logo-text">
+            <h2>DAR LALLA</h2>
+            <p>ÉLÉGANCE MAROCAINE</p>
+        </div>
+    </div>
+
+    <div class="menu">
+        <a href="/">ACCUEIL</a>
+        <a href="/products?categorie=Takchita">TAKCHITA</a>
+        <a href="/products?categorie=Caftan">CAFTAN</a>
+        <a href="/products?categorie=Djellaba">DJELLABA</a>
+        <a href="/products?categorie=Mdamma">MDAMMA</a>
+        <a href="/contact">CONTACT</a>
+    </div>
+
+    <div class="icons">
+        <i class="bi bi-search"></i>
+        <i class="bi bi-person"></i>
+        <i class="bi bi-heart"></i>
+        <a href="/cart"><i class="bi bi-bag"></i></a>
+    </div>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="mini-title"><i class="bi bi-gem" style="color:var(--gold);margin:0 8px;"></i> L’ART DE LA TRADITION MAROCAINE <i class="bi bi-gem" style="color:var(--gold);margin:0 8px;"></i></div>
+        <h1>La Tradition <br><span>Réinventée</span></h1>
+        <p>
+            Découvrez nos magnifiques Takchitas, Caftans, Djellabas et accessoires marocains
+            inspirés du patrimoine traditionnel et du luxe oriental.
+        </p>
+
+        <a href="/products" class="btn-discover">
+            <i class="bi bi-bag-heart-fill"></i>
+            Découvrir nos produits
+        </a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="row g-4">
+        <div class="col-md-3 feature-box">
+            <i class="bi bi-truck"></i>
+            <h5>Livraison Rapide</h5>
+            <p>Partout au Maroc</p>
+        </div>
+
+        <div class="col-md-3 feature-box">
+            <i class="bi bi-shield-check"></i>
+            <h5>Paiement Sécurisé</h5>
+            <p>100% protégé</p>
+        </div>
+
+        <div class="col-md-3 feature-box">
+            <i class="bi bi-award"></i>
+            <h5>Qualité Premium</h5>
+            <p>Fait avec amour</p>
+        </div>
+
+        <div class="col-md-3 feature-box">
+            <i class="bi bi-headset"></i>
+            <h5>Support 7j/7</h5>
+            <p>Service disponible</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-small">NOS CATÉGORIES</div>
+    <div class="section-title">Nos <span>Collections</span></div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="collection-card" style="background-image:url('/images/caftan.jpeg');">
+                <div class="card-content">
+                    <div class="circle-icon"><i class="bi bi-stars"></i></div>
+                    <h3>Caftans</h3>
+                    <p>Élégance et raffinement</p>
+                    <a href="/products?categorie=Caftan" class="btn-small">DÉCOUVRIR</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="collection-card" style="background-image:url('/images/takchita.jpeg');">
+                <div class="card-content">
+                    <div class="circle-icon"><i class="bi bi-flower1"></i></div>
+                    <h3>Takchitas</h3>
+                    <p>Tradition & luxe</p>
+                    <a href="/products?categorie=Takchita" class="btn-small">DÉCOUVRIR</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="collection-card" style="background-image:url('/images/mdamma.jpeg');">
+                <div class="card-content">
+                    <div class="circle-icon"><i class="bi bi-gem"></i></div>
+                    <h3>Mdamma</h3>
+                    <p>Bijoux traditionnels</p>
+                    <a href="/products?categorie=Mdamma" class="btn-small">DÉCOUVRIR</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="collection-card" style="background-image:url('/images/djellaba.jpeg');">
+                <div class="card-content">
+                    <div class="circle-icon"><i class="bi bi-suit-heart"></i></div>
+                    <h3>Djellabas</h3>
+                    <p>Confort & élégance</p>
+                    <a href="/products?categorie=Djellaba" class="btn-small">DÉCOUVRIR</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section products">
+    <div class="section-small">MEILLEURES VENTES</div>
+    <div class="section-title text-white">Nos <span>Best Sellers</span></div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="product-card">
+                <img src="/images/takchita.jpeg">
+                <div class="product-info">
+                    <h5>Takchita Royale</h5>
+                    <div class="price">2890 MAD</div>
+                    <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="product-card">
+                <img src="/images/caftan.jpeg">
+                <div class="product-info">
+                    <h5>Caftan Andalous</h5>
+                    <div class="price">2450 MAD</div>
+                    <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="product-card">
+                <img src="/images/djellaba.jpeg">
+                <div class="product-info">
+                    <h5>Djellaba Chic</h5>
+                    <div class="price">890 MAD</div>
+                    <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="product-card">
+                <img src="/images/mdamma.jpeg">
+                <div class="product-info">
+                    <h5>Mdamma Dorée</h5>
+                    <div class="price">390 MAD</div>
+                    <div class="stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-small">AVIS CLIENTES</div>
+    <div class="section-title">Ce que disent nos <span>clientes</span></div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg">
+                <h4>Salma</h4>
+                <p>Les takchitas sont magnifiques et la qualité est incroyable.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg">
+                <h4>Yasmine</h4>
+                <p>Très belle expérience et style marocain très élégant.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/65.jpg">
+                <h4>Imane</h4>
+                <p>Livraison rapide et vêtements magnifiques.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    © 2026 <span>Dar Lalla</span> — Élégance Marocaine
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

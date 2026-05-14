@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${isEdit ? 'Modifier' : 'Nouveau'} + ' Produit - Dar Lalla Admin'">Produit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--burgundy:#5a0015;--gold:#d4a44d;--cream:#fff8f1;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Poppins',sans-serif;background:#f5f5f5;}
+        .sidebar{width:260px;background:linear-gradient(180deg,#3d0010 0%,#5a0015 100%);min-height:100vh;position:fixed;padding:30px 20px;box-shadow:4px 0 15px rgba(0,0,0,0.2);}
+        .sidebar-logo{text-align:center;margin-bottom:50px;padding-bottom:30px;border-bottom:1px solid rgba(212,164,77,0.3);}
+        .sidebar-logo .logo-circle{width:80px;height:80px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:var(--gold);font-size:40px;font-family:'Playfair Display',serif;}
+        .sidebar-logo h3{color:var(--gold);font-family:'Playfair Display',serif;margin:0;font-size:28px;}
+        .sidebar-logo p{color:#f4d7a1;margin:5px 0 0;font-size:12px;letter-spacing:2px;}
+        .sidebar-menu{list-style:none;padding:0;}
+        .sidebar-menu li{margin-bottom:10px;}
+        .sidebar-menu a{display:block;padding:15px 20px;color:white;text-decoration:none;border-radius:10px;transition:0.3s;font-weight:500;}
+        .sidebar-menu a:hover,.sidebar-menu a.active{background:rgba(212,164,77,0.2);color:var(--gold);}
+        .sidebar-menu i{margin-right:12px;font-size:18px;}
+        .main-content{margin-left:260px;padding:30px;}
+        .top-bar{background:white;padding:20px 30px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;}
+        .top-bar h2{color:var(--burgundy);font-family:'Playfair Display',serif;margin:0;font-size:32px;}
+        .user-info{display:flex;align-items:center;gap:15px;}
+        .user-info span{color:#555;font-weight:500;}
+        .user-info .logout-btn{background:var(--burgundy);color:white;padding:10px 20px;border:none;border-radius:8px;text-decoration:none;font-weight:500;transition:0.3s;}
+        .user-info .logout-btn:hover{background:var(--gold);color:var(--burgundy);}
+        .card{background:white;border-radius:15px;padding:30px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+        .card h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:28px;margin-bottom:30px;}
+        .form-group{margin-bottom:20px;}
+        .form-group label{display:block;margin-bottom:8px;color:#333;font-weight:600;}
+        .form-control{padding:12px 15px;border:2px solid #ddd;border-radius:10px;font-size:14px;transition:0.3s;width:100%;}
+        .form-control:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,164,77,0.1);}
+        textarea.form-control{resize:vertical;min-height:100px;}
+        .form-select{padding:12px 15px;border:2px solid #ddd;border-radius:10px;font-size:14px;width:100%;}
+        .form-select:focus{border-color:var(--gold);outline:none;}
+        .file-upload{border:2px dashed #ddd;padding:30px;text-align:center;border-radius:10px;cursor:pointer;transition:0.3s;}
+        .file-upload:hover{border-color:var(--gold);background:#fafafa;}
+        .file-upload input{display:none;}
+        .image-preview{width:150px;height:150px;border-radius:10px;object-fit:cover;margin-top:10px;display:none;}
+        .btn-submit{background:var(--burgundy);color:white;padding:15px 40px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:0.3s;}
+        .btn-submit:hover{background:var(--gold);color:var(--burgundy);}
+        .btn-cancel{background:#6c757d;color:white;padding:15px 30px;border:none;border-radius:10px;font-size:16px;font-weight:600;text-decoration:none;display:inline-block;transition:0.3s;}
+        .btn-cancel:hover{background:#5a6268;color:white;}
+        .error{color:#dc3545;font-size:12px;margin-top:5px;}
+        .actions{display:flex;gap:15px;margin-top:30px;}
+        @media(max-width:900px){.sidebar{display:none;}.main-content{margin-left:0;}}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-circle">D</div>
+        <h3>DAR LALLA</h3>
+        <p>ADMINISTRATION</p>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="/admin"><i class="bi bi-grid"></i> Dashboard</a></li>
+        <li><a href="/admin/products/new" th:classappend="${!isEdit ? 'active' : ''}"><i class="bi bi-plus-circle"></i> Nouveau Produit</a></li>
+        <li><a href="/admin/users"><i class="bi bi-people"></i> Utilisateurs</a></li>
+        <li><a href="/admin/orders"><i class="bi bi-bag"></i> Commandes</a></li>
+        <li><a href="/"><i class="bi bi-arrow-left"></i> Retour au Site</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="top-bar">
+        <h2 th:text="${isEdit ? 'Modifier' : 'Nouveau'} + ' Produit'">Produit</h2>
+        <div class="user-info">
+            <span>Bienvenue, Admin</span>
+            <a href="/logout" class="logout-btn">Déconnexion</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 th:text="${isEdit ? 'Modifier le produit' : 'Ajouter un nouveau produit'}">Produit</h3>
+
+        <form th:action="${isEdit ? '/admin/products/edit/' + product.id : '/admin/products'}"
+              th:object="${product}" method="post" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nom">Nom du produit *</label>
+                        <input type="text" id="nom" th:field="*{nom}" class="form-control" placeholder="Ex: Takchita traditionnelle">
+                        <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="categorie">Catégorie *</label>
+                        <select id="categorie" th:field="*{categorie}" class="form-select">
+                            <option value="">Sélectionner une catégorie</option>
+                            <option value="Takchita">Takchita</option>
+                            <option value="Caftan">Caftan</option>
+                            <option value="Mdamma">Mdamma</option>
+                            <option value="Djellaba">Djellaba</option>
+                            <option value="Accessoires">Accessoires</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('categorie')}" th:errors="*{categorie}" class="error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea id="description" th:field="*{description}" class="form-control" placeholder="Décrivez le produit en détail..."></textarea>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="prix">Prix (MAD) *</label>
+                        <input type="number" id="prix" th:field="*{prix}" class="form-control" placeholder="0.00" step="0.01" min="0">
+                        <span th:if="${#fields.hasErrors('prix')}" th:errors="*{prix}" class="error"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="taille">Taille *</label>
+                        <select id="taille" th:field="*{taille}" class="form-select">
+                            <option value="">Sélectionner</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                        <span th:if="${#fields.hasErrors('taille')}" th:errors="*{taille}" class="error"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="couleur">Couleur *</label>
+                        <input type="text" id="couleur" th:field="*{couleur}" class="form-control" placeholder="Ex: Rouge bordeaux">
+                        <span th:if="${#fields.hasErrors('couleur')}" th:errors="*{couleur}" class="error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="stock">Stock *</label>
+                        <input type="number" id="stock" th:field="*{stock}" class="form-control" placeholder="Quantité" min="0">
+                        <span th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="error"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="imageFile">Image *</label>
+                        <label class="file-upload">
+                            <input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="previewImage(event)">
+                            <i class="bi bi-cloud-upload" style="font-size:40px;color:var(--gold);"></i>
+                            <p style="margin-top:10px;color:#888;">Cliquez pour télécharger une image</p>
+                        </label>
+                        <img id="imagePreview" class="image-preview" alt="Aperçu">
+                        <span th:if="${#fields.hasErrors('imageFile')}" th:errors="*{imageFile}" class="error"></span>
+                        <input type="hidden" th:field="*{image}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn-submit">
+                    <i class="bi" th:classappend="${isEdit ? 'bi-check-lg' : 'bi-plus-lg'}"></i>
+                    <span th:text="${isEdit ? 'Mettre à jour' : 'Ajouter le produit'}">Enregistrer</span>
+                </button>
+                <a href="/admin" class="btn-cancel">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Dar Lalla Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--burgundy:#5a0015;--gold:#d4a44d;--cream:#fff8f1;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Poppins',sans-serif;background:#f5f5f5;}
+        .sidebar{width:260px;background:linear-gradient(180deg,#3d0010 0%,#5a0015 100%);min-height:100vh;position:fixed;padding:30px 20px;box-shadow:4px 0 15px rgba(0,0,0,0.2);}
+        .sidebar-logo{text-align:center;margin-bottom:50px;padding-bottom:30px;border-bottom:1px solid rgba(212,164,77,0.3);}
+        .sidebar-logo .logo-circle{width:80px;height:80px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 15px;color:var(--gold);font-size:40px;font-family:'Playfair Display',serif;}
+        .sidebar-logo h3{color:var(--gold);font-family:'Playfair Display',serif;margin:0;font-size:28px;}
+        .sidebar-logo p{color:#f4d7a1;margin:5px 0 0;font-size:12px;letter-spacing:2px;}
+        .sidebar-menu{list-style:none;padding:0;}
+        .sidebar-menu li{margin-bottom:10px;}
+        .sidebar-menu a{display:block;padding:15px 20px;color:white;text-decoration:none;border-radius:10px;transition:0.3s;font-weight:500;}
+        .sidebar-menu a:hover,.sidebar-menu a.active{background:rgba(212,164,77,0.2);color:var(--gold);}
+        .sidebar-menu i{margin-right:12px;font-size:18px;}
+        .main-content{margin-left:260px;padding:30px;}
+        .top-bar{background:white;padding:20px 30px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:30px;display:flex;justify-content:space-between;align-items:center;}
+        .top-bar h2{color:var(--burgundy);font-family:'Playfair Display',serif;margin:0;font-size:32px;}
+        .user-info{display:flex;align-items:center;gap:15px;}
+        .user-info span{color:#555;font-weight:500;}
+        .user-info .logout-btn{background:var(--burgundy);color:white;padding:10px 20px;border:none;border-radius:8px;text-decoration:none;font-weight:500;transition:0.3s;}
+        .user-info .logout-btn:hover{background:var(--gold);color:var(--burgundy);}
+        .alert{border-radius:10px;padding:15px 20px;margin-bottom:20px;}
+        .card{background:white;border-radius:15px;padding:25px;box-shadow:0 2px 10px rgba(0,0,0,0.05);margin-bottom:25px;}
+        .card h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:24px;margin-bottom:20px;}
+        .table{width:100%;border-collapse:collapse;}
+        .table th{background:var(--burgundy);color:white;padding:15px;text-align:left;font-weight:600;}
+        .table td{padding:15px;border-bottom:1px solid #eee;}
+        .table tr:hover{background:#fafafa;}
+        .table img{width:60px;height:60px;border-radius:8px;object-fit:cover;}
+        .btn{background:var(--burgundy);color:white;padding:8px 16px;border:none;border-radius:8px;text-decoration:none;font-weight:500;transition:0.3s;display:inline-block;}
+        .btn:hover{background:var(--gold);color:var(--burgundy);}
+        .btn-danger{background:#dc3545;}
+        .btn-danger:hover{background:#c82333;color:white;}
+        .btn-add{background:var(--gold);color:var(--burgundy);padding:12px 25px;font-size:16px;}
+        .btn-add:hover{background:var(--burgundy);color:white;}
+        .stock-badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+        .stock-badge.in-stock{background:#d4edda;color:#155724;}
+        .stock-badge.low-stock{background:#fff3cd;color:#856404;}
+        .stock-badge.out-of-stock{background:#f8d7da;color:#721c24;}
+        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:30px;}
+        .stat-card{background:white;border-radius:15px;padding:25px;box-shadow:0 2px 10px rgba(0,0,0,0.05);text-align:center;}
+        .stat-card i{font-size:40px;color:var(--gold);margin-bottom:15px;}
+        .stat-card h4{color:var(--burgundy);font-size:32px;margin:0;font-family:'Playfair Display',serif;}
+        .stat-card p{color:#888;margin:5px 0 0;font-size:14px;}
+        @media(max-width:900px){.sidebar{display:none;}.main-content{margin-left:0;}}
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-circle">D</div>
+        <h3>DAR LALLA</h3>
+        <p>ADMINISTRATION</p>
+    </div>
+    <ul class="sidebar-menu">
+        <li><a href="/admin" class="active"><i class="bi bi-grid"></i> Dashboard</a></li>
+        <li><a href="/admin/products/new"><i class="bi bi-plus-circle"></i> Nouveau Produit</a></li>
+        <li><a href="/admin/users"><i class="bi bi-people"></i> Utilisateurs</a></li>
+        <li><a href="/admin/orders"><i class="bi bi-bag"></i> Commandes</a></li>
+        <li><a href="/"><i class="bi bi-arrow-left"></i> Retour au Site</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="top-bar">
+        <h2>Dashboard</h2>
+        <div class="user-info">
+            <span>Bienvenue, Admin</span>
+            <a href="/logout" class="logout-btn">Déconnexion</a>
+        </div>
+    </div>
+
+    <div th:if="${param.success}" class="alert alert-success">Opération réussie !</div>
+    <div th:if="${param.deleted}" class="alert alert-info">Produit supprimé avec succès.</div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="bi bi-box-seam"></i>
+            <h4 th:text="${products.size()}">0</h4>
+            <p>Produits</p>
+        </div>
+        <div class="stat-card">
+            <i class="bi bi-people"></i>
+            <h4 th:text="${totalUsers}">0</h4>
+            <p>Utilisateurs</p>
+        </div>
+        <div class="stat-card">
+            <i class="bi bi-bag-check"></i>
+            <h4 th:text="${totalOrders}">0</h4>
+            <p>Commandes</p>
+        </div>
+        <div class="stat-card">
+            <i class="bi bi-currency-exchange"></i>
+            <h4 th:text="${#numbers.formatDecimal(totalRevenue, 0, 0)}">0</h4>
+            <p>Revenu (MAD)</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 style="margin:0;">Produits</h3>
+            <a href="/admin/products/new" class="btn btn-add"><i class="bi bi-plus"></i> Ajouter un produit</a>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Catégorie</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td>
+                        <img th:src="@{'/uploads/' + ${product.image}}" alt="Produit" th:if="${product.image}">
+                        <img src="https://via.placeholder.com/60" alt="Pas d'image" th:unless="${product.image}">
+                    </td>
+                    <td th:text="${product.nom}">Nom</td>
+                    <td th:text="${product.categorie}">Catégorie</td>
+                    <td><span th:text="${product.prix}">0</span> MAD</td>
+                    <td>
+                        <span class="stock-badge in-stock" th:if="${product.stock > 5}" th:text="${product.stock}">Stock</span>
+                        <span class="stock-badge low-stock" th:if="${product.stock > 0 && product.stock <= 5}" th:text="${product.stock}">Stock</span>
+                        <span class="stock-badge out-of-stock" th:if="${product.stock == 0}">Rupture</span>
+                    </td>
+                    <td>
+                        <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn"><i class="bi bi-pencil"></i></a>
+                        <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce produit?')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${products.isEmpty()}">
+                    <td colspan="6" style="text-align:center;padding:40px;color:#888;">
+                        Aucun produit pour le moment. <a href="/admin/products/new" style="color:var(--burgundy);">Ajouter un produit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

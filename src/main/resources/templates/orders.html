@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Commandes - Dar Lalla</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--burgundy:#5a0015;--gold:#d4a44d;--cream:#fff8f1;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Poppins',sans-serif;background:var(--cream);}
+        .top-bar{background:linear-gradient(to right,#6d071f,#8b0f2f,#6d071f);color:#f5d28d;padding:10px;text-align:center;font-size:14px;}
+        .top-bar span{margin:0 25px;}
+        .navbar-custom{background:#3d0010;padding:18px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:999;}
+        .logo{display:flex;align-items:center;gap:15px;}
+        .logo-circle{width:70px;height:70px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:35px;font-family:'Playfair Display',serif;box-shadow:0 0 20px rgba(212,164,77,0.5);}
+        .logo-text h2{color:var(--gold);font-family:'Playfair Display',serif;margin:0;font-size:38px;}
+        .logo-text p{color:#f4d7a1;margin:0;letter-spacing:3px;font-size:12px;}
+        .menu{display:flex;gap:35px;}
+        .menu a{color:white;text-decoration:none;font-weight:600;transition:0.3s;}
+        .menu a:hover{color:var(--gold);}
+        .icons i{color:white;margin-left:20px;font-size:24px;cursor:pointer;transition:0.3s;}
+        .icons i:hover{color:var(--gold);}
+        .section-title{text-align:center;margin:50px 0 30px;font-size:48px;color:var(--burgundy);font-family:'Playfair Display',serif;}
+        .orders-container{max-width:1000px;margin:0 auto;padding:0 20px;}
+        .order-card{background:white;border-radius:15px;padding:25px;margin-bottom:20px;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
+        .order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid #eee;}
+        .order-id{color:var(--burgundy);font-weight:600;font-size:18px;}
+        .order-date{color:#666;font-size:14px;}
+        .order-status{padding:8px 16px;border-radius:20px;font-size:14px;font-weight:600;}
+        .status-en-attente{background:#fff3cd;color:#856404;}
+        .status-confirmee{background:#d4edda;color:#155724;}
+        .status-en-preparation{background:#cce5ff;color:#004085;}
+        .status-expediee{background:#e2e3e5;color:#383d41;}
+        .status-livree{background:#d4edda;color:#155724;}
+        .status-annulee{background:#f8d7da;color:#721c24;}
+        .order-items{padding:10px 0;}
+        .order-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f5f5f5;}
+        .order-item:last-child{border-bottom:none;}
+        .item-info{color:#333;}
+        .item-qty{color:#666;font-size:14px;}
+        .item-price{color:var(--gold);font-weight:600;}
+        .order-total{display:flex;justify-content:space-between;padding:20px 0 0;border-top:2px solid var(--burgundy);margin-top:15px;}
+        .order-total-label{font-weight:600;color:var(--burgundy);}
+        .order-total-amount{font-size:24px;font-weight:bold;color:var(--gold);}
+        .empty-orders{text-align:center;padding:80px 20px;}
+        .empty-orders i{font-size:80px;color:var(--gold);margin-bottom:20px;}
+        .empty-orders h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:32px;margin-bottom:15px;}
+        .empty-orders p{color:#666;margin-bottom:30px;}
+        .empty-orders a{background:var(--burgundy);color:white;padding:15px 30px;text-decoration:none;border-radius:10px;font-weight:600;transition:0.3s;}
+        .empty-orders a:hover{background:var(--gold);color:var(--burgundy);}
+        footer{background:#2b000c;color:white;text-align:center;padding:35px;margin-top:70px;font-size:18px;}
+        footer span{color:var(--gold);font-weight:bold;}
+        @media(max-width:768px){.order-header{flex-direction:column;gap:10px;}.order-card{padding:15px;}}
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <span><i class="bi bi-truck"></i> Livraison à partir de 100 MAD</span>
+    <span><i class="bi bi-gem"></i> Qualité Premium</span>
+    <span><i class="bi bi-shield-check"></i> Paiement sécurisé</span>
+</div>
+
+<div class="navbar-custom">
+    <div class="logo">
+        <div class="logo-circle">D</div>
+        <div class="logo-text">
+            <h2>DAR LALLA</h2>
+            <p>ÉLÉGANCE MAROCAINE</p>
+        </div>
+    </div>
+    <div class="menu">
+        <a href="/">ACCUEIL</a>
+        <a href="/products?categorie=Takchita">TAKCHITA</a>
+        <a href="/products?categorie=Caftan">CAFTAN</a>
+        <a href="/products?categorie=Djellaba">DJELLABA</a>
+        <a href="/products?categorie=Mdamma">MDAMMA</a>
+        <a href="/contact">CONTACT</a>
+    </div>
+
+    <div class="icons">
+        <a href="/order"><i class="bi bi-receipt"></i></a>
+        <a href="/cart"><i class="bi bi-bag"></i></a>
+        <a href="/login"><i class="bi bi-person"></i></a>
+    </div>
+</div>
+
+<h2 class="section-title">Mes Commandes</h2>
+
+<div class="orders-container" th:if="${orders != null and !orders.isEmpty()}">
+    <div class="order-card" th:each="order : ${orders}">
+        <div class="order-header">
+            <div>
+                <span class="order-id">Commande #<span th:text="${order.id}">0</span></span>
+                <span class="order-date" th:text="${#temporals.format(order.dateCommande, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+            <span class="order-status" th:classappend="${'status-' + order.status.name().toLowerCase()}" th:text="${order.status}">EN_ATTENTE</span>
+        </div>
+
+        <div class="order-items">
+            <div class="order-item" th:each="item : ${order.items}">
+                <div class="item-info">
+                    <strong th:text="${item.product.nom}">Nom</strong>
+                    <span class="item-qty" th:text="' × ' + ${item.quantite}"></span>
+                </div>
+                <span class="item-price"><span th:text="${#numbers.formatDecimal(item.sousTotal, 0, 0)}">0</span> MAD</span>
+            </div>
+        </div>
+
+        <div class="order-total">
+            <span class="order-total-label">Total</span>
+            <span class="order-total-amount"><span th:text="${#numbers.formatDecimal(order.total, 0, 0)}">0</span> MAD</span>
+        </div>
+    </div>
+</div>
+
+<div class="orders-container" th:if="${orders == null or orders.isEmpty()}">
+    <div class="empty-orders">
+        <i class="bi bi-bag"></i>
+        <h3>Vous n'avez pas encore de commandes</h3>
+        <p>Découvrez nos magnifique créations marocaines</p>
+        <a href="/products">Voir les produits</a>
+    </div>
+</div>
+
+<footer>
+    © 2026 <span>Dar Lalla</span> — Élégance Marocaine
+</footer>
+
+</body>
+</html>
