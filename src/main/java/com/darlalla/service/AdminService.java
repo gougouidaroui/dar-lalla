@@ -81,10 +81,11 @@ public class AdminService {
 
     @Transactional
     public Order updateOrderStatus(Long orderId, Order.OrderStatus status) {
-        Order order = getOrderById(orderId);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Commande non trouvée"));
         order.setStatus(status);
         logger.info("Updated order {} status to {}", orderId, status);
-        return orderRepository.save(order);
+        return orderRepository.saveAndFlush(order);
     }
 
     // Dashboard stats
@@ -165,6 +166,10 @@ public class AdminService {
                 .setParameter(1, id)
                 .executeUpdate();
 
+        entityManager.createNativeQuery("DELETE FROM cart_items WHERE product_id = ?")
+                .setParameter(1, id)
+                .executeUpdate();
+
         Product product = getProductById(id);
 
         if (product.getImage() != null && !product.getImage().startsWith("http")) {
@@ -177,7 +182,12 @@ public class AdminService {
 
     private String saveImage(MultipartFile file) {
         try {
-            Path uploadPath = Paths.get(uploadDir);
+            Path uploadPath;
+            if (Paths.get(uploadDir).isAbsolute()) {
+                uploadPath = Paths.get(uploadDir);
+            } else {
+                uploadPath = Paths.get(System.getProperty("user.dir"), uploadDir);
+            }
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
@@ -202,7 +212,13 @@ public class AdminService {
 
     private void deleteImage(String filename) {
         try {
-            Path filePath = Paths.get(uploadDir).resolve(filename);
+            Path uploadPath;
+            if (Paths.get(uploadDir).isAbsolute()) {
+                uploadPath = Paths.get(uploadDir);
+            } else {
+                uploadPath = Paths.get(System.getProperty("user.dir"), uploadDir);
+            }
+            Path filePath = uploadPath.resolve(filename);
             Files.deleteIfExists(filePath);
             logger.info("Image deleted: {}", filename);
         } catch (IOException e) {

@@ -99,22 +99,22 @@
                     <td th:text="${#temporals.format(order.dateCommande, 'dd/MM/yyyy HH:mm')}">Date</td>
                     <td><span th:text="${order.total}">0</span> MAD</td>
                     <td>
-                        <span class="status-badge en-attente" th:if="${order.status == 'EN_ATTENTE'}" th:text="${order.status}">En attente</span>
-                        <span class="status-badge confirmee" th:if="${order.status == 'CONFIRMEE'}" th:text="${order.status}">Confirmée</span>
-                        <span class="status-badge en-preparation" th:if="${order.status == 'EN_PREPARATION'}" th:text="${order.status}">En préparation</span>
-                        <span class="status-badge expediee" th:if="${order.status == 'EXPEDIEE'}" th:text="${order.status}">Expédiée</span>
-                        <span class="status-badge livree" th:if="${order.status == 'LIVREE'}" th:text="${order.status}">Livrée</span>
-                        <span class="status-badge annulee" th:if="${order.status == 'ANNULEE'}" th:text="${order.status}">Annulée</span>
+                        <span class="status-badge en-attente" th:if="${order.status.name() == 'EN_ATTENTE'}" th:text="${order.status}">En attente</span>
+                        <span class="status-badge confirmee" th:if="${order.status.name() == 'CONFIRMEE'}" th:text="${order.status}">Confirmée</span>
+                        <span class="status-badge en-preparation" th:if="${order.status.name() == 'EN_PREPARATION'}" th:text="${order.status}">En préparation</span>
+                        <span class="status-badge expediee" th:if="${order.status.name() == 'EXPEDIEE'}" th:text="${order.status}">Expédiée</span>
+                        <span class="status-badge livree" th:if="${order.status.name() == 'LIVREE'}" th:text="${order.status}">Livrée</span>
+                        <span class="status-badge annulee" th:if="${order.status.name() == 'ANNULEE'}" th:text="${order.status}">Annulée</span>
                     </td>
                     <td>
                         <form th:action="@{'/admin/orders/' + ${order.id} + '/status'}" method="post" style="display:inline;">
                             <select name="status" class="form-select" style="width:auto;display:inline-block;">
-                                <option value="EN_ATTENTE" th:selected="${order.status == 'EN_ATTENTE'}">En attente</option>
-                                <option value="CONFIRMEE" th:selected="${order.status == 'CONFIRMEE'}">Confirmée</option>
-                                <option value="EN_PREPARATION" th:selected="${order.status == 'EN_PREPARATION'}">En préparation</option>
-                                <option value="EXPEDIEE" th:selected="${order.status == 'EXPEDIEE'}">Expédiée</option>
-                                <option value="LIVREE" th:selected="${order.status == 'LIVREE'}">Livrée</option>
-                                <option value="ANNULEE" th:selected="${order.status == 'ANNULEE'}">Annulée</option>
+                                <option value="EN_ATTENTE" th:selected="${order.status.name() == 'EN_ATTENTE'}">En attente</option>
+                                <option value="CONFIRMEE" th:selected="${order.status.name() == 'CONFIRMEE'}">Confirmée</option>
+                                <option value="EN_PREPARATION" th:selected="${order.status.name() == 'EN_PREPARATION'}">En préparation</option>
+                                <option value="EXPEDIEE" th:selected="${order.status.name() == 'EXPEDIEE'}">Expédiée</option>
+                                <option value="LIVREE" th:selected="${order.status.name() == 'LIVREE'}">Livrée</option>
+                                <option value="ANNULEE" th:selected="${order.status.name() == 'ANNULEE'}">Annulée</option>
                             </select>
                             <button type="submit" class="btn">Mettre à jour</button>
                         </form>

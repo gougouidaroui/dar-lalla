@@ -96,7 +96,12 @@
                 <span class="order-id">Commande #<span th:text="${order.id}">0</span></span>
                 <span class="order-date" th:text="${#temporals.format(order.dateCommande, 'dd/MM/yyyy HH:mm')}"></span>
             </div>
-            <span class="order-status" th:classappend="${'status-' + order.status.name().toLowerCase()}" th:text="${order.status}">EN_ATTENTE</span>
+            <div style="display:flex;align-items:center;gap:15px;">
+                <a th:href="@{'/order/receipt/' + ${order.id} + '/download'}" class="btn-download" style="background:var(--gold);color:var(--burgundy);padding:8px 16px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;">
+                    <i class="bi bi-file-earmark-pdf"></i> PDF
+                </a>
+                <span class="order-status" th:classappend="${'status-' + order.status.name().toLowerCase()}" th:text="${order.status}">EN_ATTENTE</span>
+            </div>
         </div>
 
         <div class="order-items">

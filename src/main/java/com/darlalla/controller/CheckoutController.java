@@ -70,10 +70,10 @@ public class CheckoutController {
     }
 
     @PostMapping
-    public String processCheckout(@Valid @ModelAttribute CheckoutDTO checkout,
-                                   BindingResult result,
-                                   Model model,
-                                   Authentication auth) {
+    public String processCheckoutStep1(@Valid @ModelAttribute CheckoutDTO checkout,
+                                       BindingResult result,
+                                       Model model,
+                                       Authentication auth) {
         User user = getUserFromAuth(auth);
         if (user == null) {
             return "redirect:/login?redirect=/checkout";
@@ -89,15 +89,37 @@ public class CheckoutController {
             return "checkout";
         }
 
+        model.addAttribute("checkout", checkout);
+        model.addAttribute("cart", cart);
+        return "payment";
+    }
+
+    @PostMapping("/payment")
+    public String processPayment(@ModelAttribute CheckoutDTO checkout,
+                                  Model model,
+                                  Authentication auth) {
+        User user = getUserFromAuth(auth);
+        if (user == null) {
+            return "redirect:/login?redirect=/checkout";
+        }
+
+        var cart = cartService.getCartForUser(user);
+        boolean isEmpty = cart == null || cart.getItems() == null || cart.getItems().isEmpty();
+        model.addAttribute("emptyCart", isEmpty);
+        model.addAttribute("cart", cart);
+        model.addAttribute("checkout", checkout);
+
+        if (isEmpty) {
+            return "redirect:/checkout";
+        }
+
         try {
             var order = orderService.createOrder(user, checkout);
             return "redirect:/order/confirmation/" + order.getId();
         } catch (Exception e) {
             logger.error("Error creating order", e);
             model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("emptyCart", false);
-            model.addAttribute("checkout", checkout);
-            return "checkout";
+            return "payment";
         }
     }
 

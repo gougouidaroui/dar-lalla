@@ -20,6 +20,7 @@
         .menu{display:flex;gap:35px;}
         .menu a{color:white;text-decoration:none;font-weight:600;transition:0.3s;}
         .menu a:hover{color:var(--gold);}
+        .icons a{color:white;font-size:22px;margin-left:20px;}
         .section-title{text-align:center;margin:50px 0 30px;font-size:48px;color:var(--burgundy);font-family:'Playfair Display',serif;}
         .checkout-container{max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 400px;gap:40px;}
         .checkout-form{background:white;border-radius:15px;padding:30px;box-shadow:0 5px 20px rgba(0,0,0,0.08);}
@@ -28,13 +29,6 @@
         .form-group label{display:block;margin-bottom:8px;color:#333;font-weight:600;}
         .form-control{padding:12px 15px;border:2px solid #ddd;border-radius:10px;font-size:14px;width:100%;transition:0.3s;}
         .form-control:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(212,164,77,0.1);}
-        .form-select{padding:12px 15px;border:2px solid #ddd;border-radius:10px;font-size:14px;width:100%;}
-        .payment-options{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:10px;}
-        .payment-option{border:2px solid #ddd;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:0.3s;}
-        .payment-option:hover{border-color:var(--gold);}
-        .payment-option.selected{border-color:var(--gold);background:rgba(212,164,77,0.1);}
-        .payment-option i{font-size:30px;color:var(--burgundy);margin-bottom:10px;}
-        .payment-option span{display:block;font-weight:600;}
         .order-summary{background:white;border-radius:15px;padding:30px;box-shadow:0 5px 20px rgba(0,0,0,0.08);height:fit-content;position:sticky;top:100px;}
         .order-summary h3{color:var(--burgundy);font-family:'Playfair Display',serif;font-size:24px;margin-bottom:20px;}
         .order-item{display:flex;gap:15px;padding:15px 0;border-bottom:1px solid #eee;}
@@ -51,7 +45,8 @@
         .error{color:#dc3545;font-size:12px;margin-top:5px;}
         footer{background:#2b000c;color:white;text-align:center;padding:35px;margin-top:70px;font-size:18px;}
         footer span{color:var(--gold);font-weight:bold;}
-        @media(max-width:900px){.checkout-container{grid-template-columns:1fr;}.order-summary{position:static;}}
+        .row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+        @media(max-width:900px){.checkout-container{grid-template-columns:1fr;}.order-summary{position:static;}.row{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
@@ -72,13 +67,9 @@
     </div>
     <div class="menu">
         <a href="/">ACCUEIL</a>
-        <a href="/products?categorie=Takchita">TAKCHITA</a>
-        <a href="/products?categorie=Caftan">CAFTAN</a>
-        <a href="/products?categorie=Djellaba">DJELLABA</a>
-        <a href="/products?categorie=Mdamma">MDAMMA</a>
+        <a href="/products">PRODUITS</a>
         <a href="/contact">CONTACT</a>
     </div>
-
     <div class="icons">
         <a href="/order"><i class="bi bi-receipt"></i></a>
         <a href="/cart"><i class="bi bi-bag"></i></a>
@@ -92,7 +83,7 @@
     <i class="bi bi-bag-x" style="font-size:80px;color:var(--gold);margin-bottom:20px;"></i>
     <h3 style="color:var(--burgundy);font-family:'Playfair Display',serif;">Votre panier est vide</h3>
     <p style="color:#666;margin:20px 0;">Ajoutez des produits avant de passer la commande.</p>
-    <a href="/products" class="btn-checkout" style="display:inline-block;width:auto;padding:15px 30px;text-decoration:none;">Voir les produits</a>
+    <a href="/products" class="btn-checkout" style="display:inline-block;width:auto;padding:15px 30px;text-decoration:none;background:var(--burgundy);color:white;border-radius:10px;">Voir les produits</a>
 </div>
 
 <div class="checkout-container" th:if="${not emptyCart}">
@@ -105,39 +96,61 @@
 
         <form th:action="@{/checkout}" th:object="${checkout}" method="post">
             <div class="form-group">
+                <label for="nom">Nom complet *</label>
+                <input type="text" id="nom" th:field="*{nom}" class="form-control" placeholder="Ex: Mohammed Alaoui">
+                <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="error"></span>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Ex: mohammed@email.com">
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="telephone">Téléphone *</label>
+                    <input type="tel" id="telephone" th:field="*{telephone}" class="form-control" placeholder="Ex: 06 12 34 56 78">
+                    <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="error"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="ville">Ville *</label>
+                    <select id="ville" th:field="*{ville}" class="form-control">
+                        <option value="">Sélectionner une ville</option>
+                        <option value="Casablanca">Casablanca</option>
+                        <option value="Rabat">Rabat</option>
+                        <option value="Marrakech">Marrakech</option>
+                        <option value="Fès">Fès</option>
+                        <option value="Tanger">Tanger</option>
+                        <option value="Agadir">Agadir</option>
+                        <option value="Meknès">Meknès</option>
+                        <option value="Oujda">Oujda</option>
+                        <option value="Kénitra">Kénitra</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="codePostal">Code postal *</label>
+                    <input type="text" id="codePostal" th:field="*{codePostal}" class="form-control" placeholder="Ex: 10000">
+                    <span th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}" class="error"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="adresse">Adresse de livraison *</label>
-                <textarea id="adresse" th:field="*{adresseLivraison}" class="form-control" rows="3" placeholder="Rue, ville, code postal..."></textarea>
+                <textarea id="adresse" th:field="*{adresseLivraison}" class="form-control" rows="2" placeholder="Rue, quartier, numéro de maison..."></textarea>
                 <span th:if="${#fields.hasErrors('adresseLivraison')}" th:errors="*{adresseLivraison}" class="error"></span>
             </div>
 
             <div class="form-group">
-                <label for="telephone">Téléphone *</label>
-                <input type="tel" id="telephone" th:field="*{telephone}" class="form-control" placeholder="06 12 34 56 78">
-                <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="error"></span>
+                <label for="note">Note (optionnel)</label>
+                <textarea id="note" th:field="*{note}" class="form-control" rows="2" placeholder="Instructions spéciales pour la livraison..."></textarea>
             </div>
 
-            <div class="form-group">
-                <label>Mode de paiement</label>
-                <div class="payment-options">
-                    <label class="payment-option selected">
-                        <input type="radio" name="paiement" value="CARTE_BANCAIRE" checked style="display:none;">
-                        <i class="bi bi-credit-card"></i>
-                        <span>Carte Bancaire</span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="paiement" value="PAYPAL" style="display:none;">
-                        <i class="bi bi-paypal"></i>
-                        <span>PayPal</span>
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="paiement" value="VIREMENT" style="display:none;">
-                        <i class="bi bi-bank"></i>
-                        <span>Virement</span>
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Confirmer la commande</button>
+            <button type="submit" class="btn-submit">Continuer vers le paiement</button>
         </form>
     </div>
 
@@ -168,21 +181,10 @@
         </div>
     </div>
 </div>
-</div>
 
 <footer>
     © 2026 <span>Dar Lalla</span> — Élégance Marocaine
 </footer>
-
-<script>
-    document.querySelectorAll('.payment-option').forEach(option => {
-        option.addEventListener('click', function() {
-            document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
-            this.classList.add('selected');
-            this.querySelector('input[type="radio"]').checked = true;
-        });
-    });
-</script>
 
 </body>
 </html>

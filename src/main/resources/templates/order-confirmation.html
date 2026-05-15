@@ -46,7 +46,12 @@
         <strong th:text="${'#' + orderId}">#1</strong>
     </div>
     <p>Vous recevrez un email de confirmation sous peu.</p>
-    <a href="/" class="btn-home">Retour à l'accueil</a>
+    <div style="margin-top:20px;">
+        <a th:href="@{'/order/receipt/' + ${orderId} + '/download'}" style="background:var(--gold);color:var(--burgundy);padding:15px 30px;text-decoration:none;border-radius:10px;font-weight:600;display:inline-block;margin-right:15px;">
+            <i class="bi bi-file-earmark-pdf"></i> Télécharger le reçu
+        </a>
+        <a href="/" class="btn-home">Retour à l'accueil</a>
+    </div>
 </div>
 
 </body>

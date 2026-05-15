@@ -52,9 +52,11 @@ public class OrderService {
             throw new RuntimeException("Le panier est vide");
         }
 
+        String fullAddress = checkout.getVille() + ", " + checkout.getAdresseLivraison() + ", " + checkout.getCodePostal();
+
         Order order = new Order();
         order.setUser(user);
-        order.setAdresseLivraison(checkout.getAdresseLivraison());
+        order.setAdresseLivraison(fullAddress);
         order.setTelephone(checkout.getTelephone());
         order.setPaiement(checkout.getPaiement() != null ? checkout.getPaiement() : "CARTE_BANCAIRE");
         order.setStatus(Order.OrderStatus.EN_ATTENTE);

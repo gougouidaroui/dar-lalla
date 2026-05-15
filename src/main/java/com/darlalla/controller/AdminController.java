@@ -39,7 +39,8 @@ public class AdminController {
 
     @PostMapping("/products")
     public String createProduct(@Valid @ModelAttribute("product") ProductFormDTO product,
-                                 BindingResult result) {
+                                 BindingResult result, Model model) {
+        model.addAttribute("isEdit", false);
         if (result.hasErrors()) {
             return "admin/product-form";
         }
@@ -77,7 +78,8 @@ public class AdminController {
     @PostMapping("/products/edit/{id}")
     public String updateProduct(@PathVariable Long id,
                                 @Valid @ModelAttribute("product") ProductFormDTO product,
-                                BindingResult result) {
+                                BindingResult result, Model model) {
+        model.addAttribute("isEdit", true);
         if (result.hasErrors()) {
             return "admin/product-form";
         }
